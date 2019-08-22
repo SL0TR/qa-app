@@ -28,7 +28,10 @@ exports.getOne = function(req, res, next) {
 };
 
 exports.post = async function(req, res, next) {
-
- 
+  console.log('triggered')
+  const post  = req.body;
+  const newPost = await Question.create(post);
+  console.log(newPost)
+  res.json(newPost);
   
 };

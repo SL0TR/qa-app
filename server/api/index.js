@@ -2,6 +2,6 @@
 
 router.use("/users", require("./user/userRoute"));
 router.use("/quesitons", require("./question/questionRoute"));
-// router.use("/answers", require("./answer/answerRoutes"));
+router.use("/answers", require("./answer/answerRoutes"));
 
 module.exports = router;

@@ -28,6 +28,8 @@ exports.getOne = function(req, res, next) {
 };
 
 exports.post = async function(req, res, next) {
-
-
+  const answer  = req.body;
+  const newAnswer = await Answer.create(answer);
+  res.json(newAnswer);
+  
 };

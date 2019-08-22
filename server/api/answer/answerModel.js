@@ -10,7 +10,13 @@ const AnswerSchema = new Schema({
   author: {
     type: Schema.Types.ObjectId,
     ref: 'user',
-    author: true
+    author: true,
+    required: true
+  },
+  question: {
+    type: Schema.Types.ObjectId,
+    ref: 'question',
+    required: true
   }
 });
 
