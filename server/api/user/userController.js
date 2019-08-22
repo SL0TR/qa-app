@@ -3,11 +3,32 @@ const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const config = require('../../config/config');
 
-
-exports.get = function(req, res, next) {
-  res.send({
-    test: 'test'
+exports.get = async function(req, res, next) {
+  const users = await User.find({});
+  res.json({
+    users
   })
+
+};
+
+exports.params = async function(req, res, next, id) {
+
+  const user = await User.findById(id)
+    .select('-password')
+    .exec()
+
+    if (!user) {
+      next(new Error('No user with that id'));
+    }
+
+    req.user = user;
+    next();
+
+};
+
+exports.getOne = function(req, res, next) {
+  var user = req.user;
+  res.json(user);
 };
 
 exports.post = async function(req, res, next) {

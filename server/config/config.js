@@ -12,7 +12,8 @@ var config = {
   expireTime: 24 * 60 * 10,
   secrets: {
     jwt: process.env.JWT
-  }
+  },
+  logging: true
 };
 
 process.env.NODE_ENV = process.env.NODE_ENV || config.dev;

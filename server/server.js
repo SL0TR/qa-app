@@ -7,15 +7,15 @@ const http = require("http");
 const app = require("./app");
 const config = require('./config/config');
 const utils = require('./utils');
-console.log(utils)
+const logger = require('./utils/logger');
 
 // connect to mongodb on mlab.
 require('mongoose').set('useCreateIndex', true);
 require('mongoose').connect(config.db.url, { useNewUrlParser: true }, err => {
   if(err) {
-      console.log('Some problem with the connection: ' +err);
+      logger.error('Some problem with the connection: ' +err);
   } else {
-      console.log('The Mongoose connection is ready!');
+      logger.log('The Mongoose connection is ready!');
   }
 });
 
@@ -36,7 +36,7 @@ const server = http.createServer(app);
  */
 
 server.listen(port);
-console.log('listening on http://localhost:' + port);
+logger.log('listening on http://localhost:' + port);
 server.on("error", onError);
 server.on("listening", onListening);
 
