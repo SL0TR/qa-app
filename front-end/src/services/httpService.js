@@ -10,13 +10,24 @@ axios.interceptors.response.use(null, error => {
     toast.error(error.message);
   }
 
-  toast.error(error.message)
+  const errMsg = error.response.data.msg || error.message;
+  toast.error(errMsg);
+
   return Promise.reject(error);
 })
 
+// axios.defaults.withCredentials = true; 
+const http = axios.create({
+  withCredentials: true,
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+  }
+});
+
 export default {
-  get: axios.get,
-  post: axios.post,
-  delete: axios.delete,
-  put: axios.put
+  get: http.get,
+  post: http.post,
+  delete: http.delete,
+  put: http.put
 }

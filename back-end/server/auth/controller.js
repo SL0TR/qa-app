@@ -24,7 +24,7 @@ exports.signin = async function(req, res, next) {
   // send token to cookie
   res.cookie("token", token, {
     httpOnly: true,
-    maxAge: config.expireTime
+    maxAge: new Date(Date.now() + config.expireTime)
   });
 
   // send response
@@ -37,3 +37,26 @@ exports.signin = async function(req, res, next) {
   });
     
 };
+
+exports.me = async function (req, res, next) {
+  const { userId } = req;
+  if(!userId) {
+    return res.status(400).json({ msg: `No User in session`});
+  } else {
+    const user = await User.findById(userId)
+    .select('-password')
+    .exec()
+    if (!user) {
+      return res.status(400).json({ msg: `No User exists with that ID`});
+    }
+    res.json(user);
+  }
+}
+
+exports.signout = async function (req, res, next) {
+  console.log('called')
+  res.clearCookie('token');
+  res.json({
+    msg: 'Successfully Signed out!'
+  })
+}

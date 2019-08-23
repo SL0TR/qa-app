@@ -3,9 +3,11 @@ import { toast } from 'react-toastify';
 const apiEndpoint = '/api/users';
 
 export async function registerUser (user) {
+  return http.post(apiEndpoint, user);
+}
 
-  const { data } = await http.post(apiEndpoint, user);
-  if(data) {
-    toast('User registration successful!')
-  }
+export async function getAllUsers (user) {
+  const { data } = await http.get(apiEndpoint, user);
+  console.log(data);
+  return data;
 }

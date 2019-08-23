@@ -1,12 +1,27 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
+import { toast } from 'react-toastify';
 import { Row, Col } from 'react-bootstrap';
 import { registerUser } from '../../services/userService';
 import GenericForm from '../../components/Forms/genericForm';
+import { GlobalContext } from '../../components/context/GlobalState';
 
-const Register = () => {
+const Register = ( { history }) => {
 
-  const onSubmit = user => {
-    registerUser(user);
+  const { user, setUser } = useContext(GlobalContext);
+
+
+  useEffect(() => {
+    if(user) {
+      history.push('/');
+    }
+  }, [user, history])
+
+  const onSubmit = async user => {
+    const { data } = await registerUser(user);
+    if(data) {
+      toast('User registration successful!');
+      setUser(data.user);
+    }
   };
 
   return (

@@ -9,8 +9,12 @@ const jwt = require('jsonwebtoken');
 const app = express();
 var cors = require('cors')
 
+// SET SPECIFIC CORS WITH COOKE PARSING
+app.use(cors({
+  credentials: true,
+  origin: config.frontendUrl
+}));
 
-app.use(cors())
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
-import { login } from '../../services/authService';
+import { toast } from 'react-toastify';
 import GenericForm from '../../components/Forms/genericForm';
+import { GlobalContext } from '../../components/context/GlobalState';
 
-const Login = () => {
+const Login = ({ history }) => {
 
-  const onSubmit = user => {
-    login(user);
-  };
+  const { onSubmit, user } = useContext(GlobalContext);
+
+  useEffect(() => {
+    if(user) {
+      toast('Successfully Signed In!');
+      history.push('/');
+    }
+  }, [user, history])
 
   return (
     <Row className="justify-content-md-center mt-5">
       <Col xs={12}><h2 className="text-center mb-5">Login</h2></Col>
-      <Col xs={4}>
+      <Col lg={4} xs={12}>
         <GenericForm onSubmit={onSubmit}/>
       </Col>
     </Row>
