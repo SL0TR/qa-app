@@ -4,28 +4,28 @@ export const GlobalContext = React.createContext();
 
 const GLobalState = ({ children, history }) => {
 
-  const [user, setUser] = useState(null);
-
+  const [currUser, setCurrUser] = useState(null);
+  
   useEffect(() => {
     ( async () => {
       const { data: user } = await me();
       console.log(user)
-      setUser(user);
+      setCurrUser(user);
     })()
   }, [])
 
   const onSubmit = async userData => {
     const { data: { user } } = await login(userData);
     console.log(user);
-    setUser(user);
+    setCurrUser(user);
     history.push('/');
   };
 
   return ( 
     <GlobalContext.Provider value={{
       onSubmit,
-      user,
-      setUser
+      currUser,
+      setCurrUser
     }}>
       {children}
     </GlobalContext.Provider>

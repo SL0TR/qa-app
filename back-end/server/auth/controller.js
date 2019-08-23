@@ -54,7 +54,7 @@ exports.me = async function (req, res, next) {
 }
 
 exports.signout = async function (req, res, next) {
-  console.log('called')
+
   res.clearCookie('token');
   res.json({
     msg: 'Successfully Signed out!'

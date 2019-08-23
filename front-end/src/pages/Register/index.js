@@ -7,20 +7,20 @@ import { GlobalContext } from '../../components/context/GlobalState';
 
 const Register = ( { history }) => {
 
-  const { user, setUser } = useContext(GlobalContext);
+  const { currUser, setCurrUser } = useContext(GlobalContext);
 
 
   useEffect(() => {
-    if(user) {
+    if(currUser) {
       history.push('/');
     }
-  }, [user, history])
+  }, [currUser, history])
 
   const onSubmit = async user => {
     const { data } = await registerUser(user);
     if(data) {
       toast('User registration successful!');
-      setUser(data.user);
+      setCurrUser(data.user);
     }
   };
 

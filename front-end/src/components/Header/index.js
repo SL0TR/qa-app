@@ -5,11 +5,11 @@ import { GlobalContext } from '../context/GlobalState';
 import { signout } from '../../services/authService';
 const Header = () => {
 
-  const { user, setUser } = useContext(GlobalContext);
+  const { currUser, setCurrUser } = useContext(GlobalContext);
 
   const handleSignout = () => {
     signout();
-    setUser(null);
+    setCurrUser(null);
   }
 
   return (
@@ -24,17 +24,17 @@ const Header = () => {
           <Nav.Item>
             <NavLink exact activeClassName="active" className="nav-link mr-3" to="/questions" >Questions</NavLink>
           </Nav.Item>
-          { !user && (
+          { !currUser && (
             <Nav.Item>
               <NavLink exact activeClassName="active" className="nav-link mr-3" to="/login" >Login</NavLink>
             </Nav.Item>
           )}
-          { !user && (
+          { !currUser && (
             <Nav.Item>
               <NavLink exact  activeClassName="active" className="nav-link" to="/register" >Register</NavLink>
             </Nav.Item>
           )}
-          { user && (
+          { currUser && (
             <Nav.Item>
               <Nav.Link onClick={handleSignout}>Sign Out</Nav.Link>
             </Nav.Item>

@@ -6,14 +6,14 @@ import { GlobalContext } from '../../components/context/GlobalState';
 
 const Login = ({ history }) => {
 
-  const { onSubmit, user } = useContext(GlobalContext);
+  const { onSubmit, currUser } = useContext(GlobalContext);
 
   useEffect(() => {
-    if(user) {
+    if(currUser) {
       toast('Successfully Signed In!');
       history.push('/');
     }
-  }, [user, history])
+  }, [currUser, history])
 
   return (
     <Row className="justify-content-md-center mt-5">
