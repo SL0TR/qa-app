@@ -1,5 +1,6 @@
 const Answer = require('./answerModel');
 exports.get = async function(req, res, next) {
+  console.log('triggered')
   const answers = await Answer.find({});
   res.json({
     answers

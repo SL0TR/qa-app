@@ -1,6 +1,5 @@
 ﻿const createError = require("http-errors");
 const express = require("express");
-const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const indexRouter = require("./api/index");
@@ -8,12 +7,15 @@ const auth = require('./auth/routes');
 const config = require('./config/config');
 const jwt = require('jsonwebtoken');
 const app = express();
+var cors = require('cors')
 
+
+app.use(cors())
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.resolve(__dirname, "build")));
+app.disable('etag');
 
 // get token from request using a middleware and put it on req
 app.use((req, res, next) => {
@@ -25,12 +27,9 @@ app.use((req, res, next) => {
   }
   next();
 })
+
 app.use("/api", indexRouter);
 app.use('/api', auth);
-app.get("*", (req, res) => {
-  res.sendFile("build/index.html", { root: __dirname });
-});
-
 
 
 // catch 404 and forward to error handler
