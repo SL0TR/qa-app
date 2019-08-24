@@ -29,5 +29,6 @@ export default {
   get: http.get,
   post: http.post,
   delete: http.delete,
-  put: http.put
+  put: http.put,
+  all: http.all
 }

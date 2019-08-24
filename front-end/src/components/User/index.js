@@ -6,6 +6,7 @@ const User = ({ children }) => {
 
   const { setCurrUser } = useContext(GlobalContext);
 
+ 
   useEffect(() => {
     ( async () => {
       if ( checkUserLocalStorate() ) {
@@ -16,6 +17,7 @@ const User = ({ children }) => {
           setCurrUser(user);
         }
       }
+
     })()
   }, [setCurrUser])
 

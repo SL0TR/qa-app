@@ -1,66 +1,37 @@
-import React, { useRef, useContext } from 'react'
-import { Accordion, Card, ListGroup, Button, Popover, Row, Col, OverlayTrigger } from 'react-bootstrap';
+import React, { useContext } from 'react'
+import {  Row, Col, Form, Button } from 'react-bootstrap';
 import { deleteQuestion } from '../../services/questionService';
 import { GlobalContext } from '../context/GlobalState';
 import { toast } from 'react-toastify';
 
-const Question = ({ question, index, admin }) => {
+const Question = ({ question, index, admin, state, handleChange }) => {
   
   const { questions, setQuestions } = useContext(GlobalContext);
 
   const handleDelete = async id => {
-    popUpRef.current.handleHide();
     const { data: { _id } } = await deleteQuestion(id);
     const newQuestions = [...questions].filter(ques => ques._id !== _id);
     setQuestions(newQuestions);
     toast('Item Deleted!');
-
   }
 
-  const popUpRef = useRef(null);
-
-  const popover = (
-    <Popover id="popover-basic">
-      <Popover.Content>
-        <Row>
-          <Col xs={12}>
-            Are you sure you want to delete this Question?
-          </Col>
-          <Col xs={12}>
-            <Button onClick={() => {handleDelete(question._id)}} size="sm" className="mt-2" variant="danger">Delete</Button>
-          </Col>
-        </Row>
-      </Popover.Content>
-    </Popover>
-  );
-
   return (
-    <Card>
-      <Card.Header>
-        <Accordion.Toggle as="h4" style={{ cursor: 'pointer' }} eventKey={index.toString()}>
-          {question.text}
-        </Accordion.Toggle>
-      </Card.Header>
-      <Accordion.Collapse eventKey={index.toString()}>
-        <Card.Body>
-        <ListGroup>
-          {question.answers.length === 0 && (<p>No answers yet</p>)}
-          {question.answers.map ((ans, i) => (
-            <ListGroup.Item key={i}>Answer</ListGroup.Item>
-          ))}
-          { admin && (
-            <Row>
-              <Col lg={4} xs={12}>
-              <OverlayTrigger ref={popUpRef} trigger="click" placement="right" overlay={popover}>
-                <Button variant="danger" >Delete Question</Button>
-              </OverlayTrigger>
-              </Col>
-            </Row>
-          )}
-        </ListGroup>
-        </Card.Body>
-      </Accordion.Collapse>
-    </Card>
+    <Row className="justify-content-center align-items-center mb-3">
+      <Col lg={admin ? 10 : 12 } xs={12} >
+        <Form.Label>{ index+1 + '. ' + question.text }</Form.Label>
+        {
+          !admin && (
+            <Form.Control value={state[question._id]} name={question._id} onChange={handleChange}  type="text" placeholder="Enter answer" />
+          )
+        }
+      </Col>
+      {/* <Answer question={question} answers={question.answers} /> */}
+      { admin && (
+        <Col lg={2} xs={12} className="mb-2">
+          <Button style={{ width: '100%' }} onClick={() => { handleDelete(question._id)}}  variant="danger" >Delete</Button>
+        </Col>
+      )}
+    </Row>
    );
 }
 

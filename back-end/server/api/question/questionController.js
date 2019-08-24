@@ -1,7 +1,16 @@
 const Question = require('./questionModel');
 
 exports.get = async function(req, res, next) {
-  const questions = await Question.find({}).sort({ 'created' : -1 });
+  const questions = await Question.find({})
+  .sort({ 'created' : -1 }) 
+  .populate({ 
+    path: 'answers',
+    populate: {
+      path: 'author',
+      select: '-password'
+    }
+  })
+  .exec();
   res.json({
     questions
   })
@@ -30,23 +39,19 @@ exports.getOne = function(req, res, next) {
 
 exports.deleteOne = async function(req, res, next) {
   var question = req.question;
-    question.remove(function(err, removed) {
-      if (err) {
-        console.log(err);
-      } else {
-        res.json(removed);
-      }
-    });
-  // Question.deleteOne({ id: question._id }, function (err) {
-  //   console.log(err)
-  // });
-  // console.log(data);
+  question.remove(function(err, removed) {
+    if (err) {
+      return res.status(400).json({ msg: `Item couldn't be deleted!` });
+    } else {
+      res.json(removed);
+    }
+  });
 };
 
 exports.post = async function(req, res, next) {
-  const post  = req.body;
-  console.log(post);
-  const newPost = await Question.create(post);
-  res.json(newPost);
+  const question  = req.body;
+  console.log(question);
+  const newQuestion = await Question.create(question);
+  res.json(newQuestion);
   
 };

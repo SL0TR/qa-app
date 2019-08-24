@@ -1,62 +1,139 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { GlobalContext } from '../../components/context/GlobalState';
-import { Row, Col, Accordion, Form, Button } from 'react-bootstrap';
+import { Row, Col, Form, Button } from 'react-bootstrap';
 import { getAllQuestions, registerQuestion } from '../../services/questionService';
 import Question from '../../components/Question';
+import { registerAnswer } from '../../services/answerService';
+import { me } from '../../services/authService';
+import { toast } from 'react-toastify';
 
 const Questions = ({ history }) => {
   const { questions, setQuestions, currUser } = useContext(GlobalContext);
   const [ question, setQuestion ] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [state, setState] = useState({});
 
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setState(prevState => ({ ...prevState, [name]: value }));
+  }
+
+  // Route Protection
   useEffect(() => {
-    if(!currUser) {
-      history.push('/');
-    }
-  }, [currUser, history])
+  
+    (async() => {
+      try { 
+        const { data } = await me();
+        setIsAdmin(data.isAdmin);
 
+      } catch(e) {
+        console.log('no login', e)
+        history.push('/');
+      }
+    })()
+      
+  }, [currUser, history]);
+
+  // Get All Questions
   useEffect(() => {
-
     (async () => {
       const { data: questions } = await getAllQuestions();
       if(questions) {
-        setQuestions(questions.questions)
+        const userId = window.localStorage.userId;
+
+        console.log(questions.questions);
+        let newQuestions = [...questions.questions];
+
+        newQuestions = newQuestions.map(ques => {
+          const arr = ques.answers.filter(ans => ans.author._id === userId);
+          return {
+            ...ques,
+            answers: arr
+          }
+        })
+
+        // Update state based on questions.
+        newQuestions.forEach(ques => {
+          ques.answers.forEach(el => {
+            setState(prevState => ({ ...prevState, [el.question]: el.text }));
+          })
+        })
+        setQuestions(newQuestions);
       }
     })();
     
   }, [setQuestions])
 
-  const handleSubmit = async e => {
+  // Submit New Question submission
+  const handleQuestionSubmit = async e => {
     e.preventDefault();
     
     const questionData = {
       text: question
     }
+  
     const { data} = await registerQuestion(questionData);
-    if(data ) {
+  
+    if(data) {
+      console.log(data);
       setQuestion('');
       const prevQuestions = questions;
+      console.log(prevQuestions)
       const newQuestions = [
         data,
         ...prevQuestions
       ]
+      console.log(newQuestions);
+      // setState(prevState => ({ ...prevState, [name]: value }));
+      // Update state based on questions.
+      newQuestions.forEach(ques => {
+        ques.answers.forEach(el => {
+          setState(prevState => ({ ...prevState, [el.question]: el.text }));
+        })
+      })
       setQuestions(newQuestions);
     }
   }
-  const admin = currUser && currUser.isAdmin 
+
+  // Handle new Answer
+  const handleAnswerSubmit = async e => {
+    e.preventDefault();
+    const ansArray = [];
+    
+    for (var key in state) {
+      const ans = {
+        text: state[key],
+        author: currUser._id,
+        question: key
+      }
+      ansArray.push(ans)
+    }
+
+    const promises = ansArray.map(el => {
+      return registerAnswer(el);
+    });
+
+    console.log(promises);
+    const res = await Promise.all(promises);
+    if(res) {
+      toast('Submission Successful!');
+    }
+  }
+
   return (
     <>
       <Row>
         {
-          admin && (
+          isAdmin && (
             <Col xs={12}>
-              <Form onSubmit={ e => { handleSubmit(e) }}>
+              <Form onSubmit={ e => { handleQuestionSubmit(e) }}>
                 <Row>
-                  <Col lg={9} xs={12}>
+                  <Col lg={10} xs={12}>
                     <Form.Group controlId="formBasicEmail" >
                       <Form.Control value={question} onChange={e => { setQuestion(e.target.value) } }  type="text" placeholder="Enter Your Question" />
                     </Form.Group>
                   </Col>
-                  <Col lg={3} xs={12}>
+                  <Col lg={2} xs={12}>
                     <Button style={{ width: '100%'}}  variant="dark" type="submit">
                       Submit
                     </Button>
@@ -67,9 +144,14 @@ const Questions = ({ history }) => {
           )
         }
         <Col xs={12} className="mt-5">
-          <Accordion defaultActiveKey="0">
-            { questions.map( (ques, i) => <Question key={i} index={i} admin={admin} question={ques} />)}
-          </Accordion>
+          <Form onSubmit={handleAnswerSubmit}>
+          { questions.map( (ques, i) => <Question handleChange={handleChange} state={state} setState={setState} key={i} index={i} admin={isAdmin} question={ques} />)}
+          {
+            !isAdmin && (
+              <Button className="mt-2" type="submit" variant="dark">Submit</Button>
+            )
+          }
+          </Form>
         </Col>
       </Row>
     </>

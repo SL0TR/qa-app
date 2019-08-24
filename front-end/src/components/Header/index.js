@@ -3,14 +3,19 @@ import { NavLink } from 'react-router-dom';
 import { Navbar, Nav } from "react-bootstrap";
 import { GlobalContext } from '../context/GlobalState';
 import { signout, removeUserLocalStorage } from '../../services/authService';
+import { toast } from 'react-toastify';
 const Header = () => {
 
   const { currUser, setCurrUser } = useContext(GlobalContext);
 
-  const handleSignout = () => {
-    signout();
-    setCurrUser(null);
-    removeUserLocalStorage();
+  const handleSignout = async  () => {
+    const { data } = await signout();
+    if(data) {
+      toast(data.msg)
+      setCurrUser(null);
+      removeUserLocalStorage();
+      window.location.href = '/login';
+    }
   }
 
   return (

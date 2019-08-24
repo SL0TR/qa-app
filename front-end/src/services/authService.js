@@ -1,5 +1,4 @@
 import http from '../services/httpService';
-import { toast } from 'react-toastify';
 
 const apiEndpoint = '/api/auth';
 const apiEndpointMe = '/api/me';
@@ -14,10 +13,8 @@ export async function me() {
 }
 
 export async function signout() {
-  const { data } = await http.post(apiEndpointSignOut);
-  if(data) {
-    toast(data.msg)
-  }
+  return http.post(apiEndpointSignOut);
+  
 }
 
 export function setUserLocalStorage(user) {
