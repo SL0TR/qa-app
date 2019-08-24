@@ -11,7 +11,6 @@ const GLobalState = ({ children, history }) => {
   const onSubmit = async userData => {
     const { data: { user } } = await login(userData);
     if(user) {
-      console.log(user);
       setUserLocalStorage(user);
       setCurrUser(user);
       history.push('/');

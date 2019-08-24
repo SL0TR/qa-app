@@ -5,16 +5,14 @@ import { getAllQuestions, registerQuestion } from '../../services/questionServic
 import Question from '../../components/Question';
 
 const Questions = () => {
-  const { questions, setQuestions } = useContext(GlobalContext);
+  const { questions, setQuestions, currUser } = useContext(GlobalContext);
   const [ question, setQuestion ] = useState('');
 
   useEffect(() => {
 
     (async () => {
-      console.log('called')
       const { data: questions } = await getAllQuestions();
       if(questions) {
-        console.log(questions.questions);
         setQuestions(questions.questions)
       }
     })();
@@ -38,29 +36,33 @@ const Questions = () => {
       setQuestions(newQuestions);
     }
   }
-
+  const admin = currUser && currUser.isAdmin 
   return (
     <>
       <Row>
-        <Col xs={12}>
-          <Form onSubmit={ e => { handleSubmit(e) }}>
-            <Row>
-              <Col lg={9} xs={12}>
-                <Form.Group controlId="formBasicEmail" >
-                  <Form.Control value={question} onChange={e => { setQuestion(e.target.value) } }  type="text" placeholder="Enter Your Question" />
-                </Form.Group>
-              </Col>
-              <Col lg={3} xs={12}>
-                <Button style={{ width: '100%'}}  variant="dark" type="submit">
-                  Submit
-                </Button>
-              </Col>
-            </Row>
-          </Form>
-        </Col>
+        {
+          admin && (
+            <Col xs={12}>
+              <Form onSubmit={ e => { handleSubmit(e) }}>
+                <Row>
+                  <Col lg={9} xs={12}>
+                    <Form.Group controlId="formBasicEmail" >
+                      <Form.Control value={question} onChange={e => { setQuestion(e.target.value) } }  type="text" placeholder="Enter Your Question" />
+                    </Form.Group>
+                  </Col>
+                  <Col lg={3} xs={12}>
+                    <Button style={{ width: '100%'}}  variant="dark" type="submit">
+                      Submit
+                    </Button>
+                  </Col>
+                </Row>
+              </Form>
+            </Col>
+          )
+        }
         <Col xs={12} className="mt-5">
           <Accordion defaultActiveKey="0">
-            { questions.map( (ques, i) => <Question key={i} index={i} question={ques} />)}
+            { questions.map( (ques, i) => <Question key={i} index={i} admin={admin} question={ques} />)}
           </Accordion>
         </Col>
       </Row>

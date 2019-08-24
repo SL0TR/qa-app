@@ -4,7 +4,7 @@ import { deleteQuestion } from '../../services/questionService';
 import { GlobalContext } from '../context/GlobalState';
 import { toast } from 'react-toastify';
 
-const Question = ({ question, index }) => {
+const Question = ({ question, index, admin }) => {
   
   const { questions, setQuestions } = useContext(GlobalContext);
 
@@ -45,16 +45,19 @@ const Question = ({ question, index }) => {
         <Card.Body>
         <ListGroup>
           {question.answers.length === 0 && (<p>No answers yet</p>)}
-          {question.answers.map ((ans, i) => console.log(ans) || (
+          {question.answers.map ((ans, i) => (
             <ListGroup.Item key={i}>Answer</ListGroup.Item>
           ))}
-          <Row>
-            <Col lg={4} xs={12}>
-            <OverlayTrigger ref={popUpRef} trigger="click" placement="right" overlay={popover}>
-              <Button variant="danger" >Delete Question</Button>
-            </OverlayTrigger>
-            </Col>
-          </Row>
+          { admin && (
+            <Row>
+              <Col lg={4} xs={12}>
+              <OverlayTrigger ref={popUpRef} trigger="click" placement="right" overlay={popover}>
+                <Button variant="danger" >Delete Question</Button>
+              </OverlayTrigger>
+              </Col>
+            </Row>
+          )}
+          
         </ListGroup>
         </Card.Body>
       </Accordion.Collapse>
