@@ -1,24 +1,20 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { login, me } from '../../services/authService';
+import React, { useState } from 'react';
+import { login, setUserLocalStorage } from '../../services/authService';
 export const GlobalContext = React.createContext();
 
 const GLobalState = ({ children, history }) => {
 
   const [currUser, setCurrUser] = useState(null);
   
-  useEffect(() => {
-    ( async () => {
-      const { data: user } = await me();
-      console.log(user)
-      setCurrUser(user);
-    })()
-  }, [])
 
   const onSubmit = async userData => {
     const { data: { user } } = await login(userData);
-    console.log(user);
-    setCurrUser(user);
-    history.push('/');
+    if(user) {
+      console.log(user);
+      setUserLocalStorage(user);
+      setCurrUser(user);
+      history.push('/');
+    }
   };
 
   return ( 

@@ -29,10 +29,10 @@ exports.signin = async function(req, res, next) {
 
   // send response
   res.json({
-    token,
     user: {
-      id: user.id,
-      email: user.email
+      _id: user.id,
+      email: user.email,
+      isAdmin: user.isAdmin
     }
   });
     

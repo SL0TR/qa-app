@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Navbar, Nav } from "react-bootstrap";
 import { GlobalContext } from '../context/GlobalState';
-import { signout } from '../../services/authService';
+import { signout, removeUserLocalStorage } from '../../services/authService';
 const Header = () => {
 
   const { currUser, setCurrUser } = useContext(GlobalContext);
@@ -10,6 +10,7 @@ const Header = () => {
   const handleSignout = () => {
     signout();
     setCurrUser(null);
+    removeUserLocalStorage();
   }
 
   return (
