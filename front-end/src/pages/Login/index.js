@@ -4,16 +4,16 @@ import { toast } from 'react-toastify';
 import GenericForm from '../../components/Forms/genericForm';
 import { GlobalContext } from '../../components/context/GlobalState';
 
-const Login = ({ history }) => {
+const Login = () => {
 
   const { onSubmit, currUser } = useContext(GlobalContext);
 
   useEffect(() => {
     if(currUser) {
       toast('Successfully Signed In!');
-      history.push('/');
+      // window.location.href = '/';
     }
-  }, [currUser, history])
+  }, [currUser])
 
   return (
     <Row className="justify-content-md-center mt-5">

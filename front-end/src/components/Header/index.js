@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { Navbar, Nav } from "react-bootstrap";
 import { GlobalContext } from '../context/GlobalState';
 import { signout, removeUserLocalStorage, me } from '../../services/authService';
@@ -31,11 +31,9 @@ const Header = () => {
       
   }, [setIsAdmin]);
 
-  console.log(isAdmin);
-
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-      <Navbar.Brand href="#home">ABC Limited</Navbar.Brand>
+      <Navbar.Brand to="/" as={Link} >ABC Limited</Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="ml-auto">

@@ -44,8 +44,8 @@ const GenericForm = ({ onSubmit }) => {
        'Your input needs to be more than 2 characters'}
       </Form.Group>
       <Row className="justify-content-md-center">
-        <Col xs={3}>
-          <Button variant="primary" type="submit">
+        <Col xs={12}>
+          <Button style={{ width: '100%'}} variant="dark" type="submit">
           Submit
         </Button>
         </Col>

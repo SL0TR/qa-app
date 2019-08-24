@@ -14,7 +14,7 @@ const GLobalState = ({ children, history }) => {
     if(user) {
       setUserLocalStorage(user);
       setCurrUser(user);
-      history.push('/');
+      window.location.href = '/';
     }
   };
 

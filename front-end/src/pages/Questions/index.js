@@ -39,7 +39,7 @@ const Questions = ({ history }) => {
       if(questions) {
         const userId = window.localStorage.userId;
 
-        console.log(questions.questions);
+        // console.log(questions.questions);
         let newQuestions = [...questions.questions];
 
         newQuestions = newQuestions.map(ques => {
@@ -71,7 +71,7 @@ const Questions = ({ history }) => {
     });
 
     if(data) {
-      console.log(data);
+      // console.log(data);
       setQuestion('');
       setQuestions(prevState => ([ data, ...prevState ]));
       toast('New Question Created!');
@@ -96,7 +96,7 @@ const Questions = ({ history }) => {
       return registerAnswer(el);
     });
 
-    console.log(promises);
+    // console.log(promises);
     const res = await Promise.all(promises);
     if(res) {
       toast('Submission Successful!');
