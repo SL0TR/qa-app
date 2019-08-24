@@ -6,6 +6,7 @@ const GLobalState = ({ children, history }) => {
 
   const [currUser, setCurrUser] = useState(null);
   const [questions, setQuestions] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
   
 
   const onSubmit = async userData => {
@@ -23,7 +24,9 @@ const GLobalState = ({ children, history }) => {
       currUser,
       setCurrUser,
       setQuestions,
-      questions
+      questions,
+      isAdmin,
+      setIsAdmin
     }}>
       {children}
     </GlobalContext.Provider>

@@ -8,11 +8,11 @@ import { me } from '../../services/authService';
 import { toast } from 'react-toastify';
 
 const Questions = ({ history }) => {
-  const { questions, setQuestions, currUser } = useContext(GlobalContext);
+  const { questions, setQuestions, currUser, setIsAdmin, isAdmin } = useContext(GlobalContext);
   const [ question, setQuestion ] = useState('');
-  const [isAdmin, setIsAdmin] = useState(false);
   const [state, setState] = useState({});
 
+  // Update input elements on change
   function handleChange(event) {
     const { name, value } = event.target;
     setState(prevState => ({ ...prevState, [name]: value }));
@@ -20,21 +20,19 @@ const Questions = ({ history }) => {
 
   // Route Protection
   useEffect(() => {
-  
     (async() => {
       try { 
         const { data } = await me();
         setIsAdmin(data.isAdmin);
-
       } catch(e) {
         console.log('no login', e)
         history.push('/');
       }
     })()
       
-  }, [currUser, history]);
+  }, [currUser, history, setIsAdmin]);
 
-  // Get All Questions
+  // Get All Questions and update state
   useEffect(() => {
     (async () => {
       const { data: questions } = await getAllQuestions();
@@ -68,30 +66,15 @@ const Questions = ({ history }) => {
   const handleQuestionSubmit = async e => {
     e.preventDefault();
     
-    const questionData = {
+    const { data} = await registerQuestion({
       text: question
-    }
-  
-    const { data} = await registerQuestion(questionData);
-  
+    });
+
     if(data) {
       console.log(data);
       setQuestion('');
-      const prevQuestions = questions;
-      console.log(prevQuestions)
-      const newQuestions = [
-        data,
-        ...prevQuestions
-      ]
-      console.log(newQuestions);
-      // setState(prevState => ({ ...prevState, [name]: value }));
-      // Update state based on questions.
-      newQuestions.forEach(ques => {
-        ques.answers.forEach(el => {
-          setState(prevState => ({ ...prevState, [el.question]: el.text }));
-        })
-      })
-      setQuestions(newQuestions);
+      setQuestions(prevState => ([ data, ...prevState ]));
+      toast('New Question Created!');
     }
   }
 

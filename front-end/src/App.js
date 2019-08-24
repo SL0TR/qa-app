@@ -20,7 +20,7 @@ const App = () => {
         {({ history }) =>  (
           <GLobalState history={history}>
             <User>
-              <ToastContainer position="top-center" pauseOnHover  closeOnClick />
+              <ToastContainer position="top-center" pauseOnHover  closeOnClick  autoClose={2000}/>
               <Header />
               <Container className="py-5">
                 <Route exact path="/" component={Home} />

@@ -12,7 +12,7 @@ const Question = ({ question, index, admin, state, handleChange }) => {
     const { data: { _id } } = await deleteQuestion(id);
     const newQuestions = [...questions].filter(ques => ques._id !== _id);
     setQuestions(newQuestions);
-    toast('Item Deleted!');
+    toast('Question Deleted!');
   }
 
   return (
