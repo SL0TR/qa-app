@@ -1,20 +1,20 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-axios.interceptors.response.use(null, error => {
-  const expectedError = error.response && 
-    error.response.status >= 400 && 
-    error.response.status <500;
+// axios.interceptors.response.use(null, error => {
+//   const expectedError = error.response && 
+//     error.response.status >= 400 && 
+//     error.response.status <500;
+  
+//   if (!expectedError) {
+//     toast.error(error.message);
+//   }
+//   const errMsg = error.response.data.msg || error.message;
+//   console.log(errMsg);
+//   toast.error(errMsg);
 
-  if (!expectedError) {
-    toast.error(error.message);
-  }
-
-  const errMsg = error.response.data.msg || error.message;
-  toast.error(errMsg);
-
-  return Promise.reject(error);
-})
+//   return Promise.reject(error);
+// })
 
 // axios.defaults.withCredentials = true; 
 const http = axios.create({
@@ -24,6 +24,21 @@ const http = axios.create({
     'Content-Type': 'application/json',
   }
 });
+
+http.interceptors.response.use(null, error => {
+  const expectedError = error.response && 
+    error.response.status >= 400 && 
+    error.response.status <500;
+  
+  if (!expectedError) {
+    toast.error(error.message);
+  }
+  const errMsg = error.response.data.msg || error.message;
+  console.log(errMsg);
+  toast.error(errMsg);
+
+  return Promise.reject(error);
+})
 
 export default {
   get: http.get,

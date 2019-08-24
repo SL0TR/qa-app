@@ -1,6 +1,12 @@
 const Question = require('./questionModel');
 
 exports.get = async function(req, res, next) {
+
+  const { userId } = req;
+  if (!userId) {
+    return res.status(400).json({ msg: 'Not authorised!' });
+  } 
+
   const questions = await Question.find({})
   .sort({ 'created' : -1 }) 
   .populate({ 
@@ -33,11 +39,23 @@ exports.params = async function(req, res, next, id) {
 };
 
 exports.getOne = function(req, res, next) {
+
+  const { userId } = req;
+  if (!userId) {
+    return res.status(400).json({ msg: 'Not authorised!' });
+  }
+
   var question = req.question;
   res.json(question);
 };
 
 exports.deleteOne = async function(req, res, next) {
+
+  const { userId, isAdmin } = req;
+  if (!isAdmin) {
+    return res.status(400).json({ msg: 'Not authorised!' });
+  } 
+
   var question = req.question;
   question.remove(function(err, removed) {
     if (err) {
@@ -49,6 +67,12 @@ exports.deleteOne = async function(req, res, next) {
 };
 
 exports.post = async function(req, res, next) {
+
+  const { isAdmin } = req;
+  if (!isAdmin) {
+    return res.status(400).json({ msg: 'Not authorised!' });
+  } 
+
   const question  = req.body;
   console.log(question);
   const newQuestion = await Question.create(question);

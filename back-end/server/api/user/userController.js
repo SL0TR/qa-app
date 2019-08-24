@@ -4,6 +4,10 @@ const jwt = require("jsonwebtoken");
 const config = require('../../config/config');
 
 exports.get = async function(req, res, next) {
+  const { userId } = req;
+  if (!userId) {
+    return res.status(400).json({ msg: 'Not authorised!' });
+  } 
   const users = await User.find({})
     .select('-password')
     .exec()
@@ -30,6 +34,10 @@ exports.params = async function(req, res, next, id) {
 };
 
 exports.getOne = function(req, res, next) {
+  const { userId } = req;
+  if (!userId) {
+    return res.status(400).json({ msg: 'Not authorised!' });
+  } 
   var user = req.user;
   res.json(user);
 };

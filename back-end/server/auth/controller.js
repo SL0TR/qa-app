@@ -19,7 +19,7 @@ exports.signin = async function(req, res, next) {
   if(!stringPass) return res.status(400).json({ msg: 'Invalid credentials'});
 
   // get the token
-  const token = jwt.sign({ userId: user.id }, config.secrets.jwt);
+  const token = jwt.sign({ userId: user.id, isAdmin: user.isAdmin }, config.secrets.jwt);
 
   // send token to cookie
   res.cookie("token", token, {

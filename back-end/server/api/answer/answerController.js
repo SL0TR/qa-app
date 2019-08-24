@@ -2,28 +2,17 @@ const Answer = require('./answerModel');
 const Question = require('../question/questionModel');
 
 exports.get = async function(req, res, next) {
+  
+  const { userId } = req;
+  if (!userId) {
+    return res.status(400).json({ msg: 'Not authorised!' });
+  }
 
   const answers = await Answer.find({});
   res.json({
     answers
   })
 
-};
-
-exports.put = function(req, res, next) {
-  var post = req.post;
-
-  var update = req.body;
-
-  _.merge(post, update);
-
-  post.save(function(err, saved) {
-    if (err) {
-      next(err);
-    } else {
-      res.json(saved);
-    }
-  })
 };
 
 exports.params = async function(req, res, next, id) {
@@ -42,11 +31,24 @@ exports.params = async function(req, res, next, id) {
 };
 
 exports.getOne = function(req, res, next) {
+
+  const { userId } = req;
+  if (!userId) {
+    return res.status(400).json({ msg: 'Not authorised!' });
+  }
+
+
   var answer = req.answer;
   res.json(answer);
 };
 
 exports.post = async function(req, res, next) {
+
+  const { userId } = req;
+  if (!userId) {
+    return res.status(400).json({ msg: 'Not authorised!' });
+  }
+
   const answer  = req.body;
   const questionId  = answer.question;
 
@@ -79,7 +81,12 @@ exports.post = async function(req, res, next) {
 
 
 exports.userAnswer = async function(req, res, next) {
-  console.log('trigg')
+
+  const { userId: usersId } = req;
+  if (!usersId) {
+    return res.status(400).json({ msg: 'Not authorised!' });
+  }
+
   const { userId, questionId }  = req.body;
   try {
     const answer = await  Answer.findOne({ author: userId, question: questionId })
