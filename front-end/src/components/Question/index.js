@@ -57,7 +57,6 @@ const Question = ({ question, index, admin }) => {
               </Col>
             </Row>
           )}
-          
         </ListGroup>
         </Card.Body>
       </Accordion.Collapse>

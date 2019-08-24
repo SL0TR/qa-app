@@ -1,5 +1,4 @@
 import http from './httpService';
-import { toast } from 'react-toastify';
 
 const apiEndpoint = '/api/questions';
 

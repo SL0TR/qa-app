@@ -17,7 +17,7 @@ const User = ({ children }) => {
         }
       }
     })()
-  }, [])
+  }, [setCurrUser])
 
   return <>{children} </>
 }

@@ -4,9 +4,15 @@ import { Row, Col, Accordion, Form, Button } from 'react-bootstrap';
 import { getAllQuestions, registerQuestion } from '../../services/questionService';
 import Question from '../../components/Question';
 
-const Questions = () => {
+const Questions = ({ history }) => {
   const { questions, setQuestions, currUser } = useContext(GlobalContext);
   const [ question, setQuestion ] = useState('');
+
+  useEffect(() => {
+    if(!currUser) {
+      history.push('/');
+    }
+  }, [currUser, history])
 
   useEffect(() => {
 

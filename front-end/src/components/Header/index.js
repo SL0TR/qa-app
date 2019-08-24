@@ -22,9 +22,12 @@ const Header = () => {
           <Nav.Item>
             <NavLink exact  activeClassName="active" className="nav-link mr-3"to="/">Home</NavLink>
           </Nav.Item>
-          <Nav.Item>
-            <NavLink exact activeClassName="active" className="nav-link mr-3" to="/questions" >Questions</NavLink>
-          </Nav.Item>
+          { currUser && (
+            <Nav.Item>
+              <NavLink exact activeClassName="active" className="nav-link mr-3" to="/questions" >Questions</NavLink>
+            </Nav.Item>
+          )}
+          
           { !currUser && (
             <Nav.Item>
               <NavLink exact activeClassName="active" className="nav-link mr-3" to="/login" >Login</NavLink>

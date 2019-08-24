@@ -1,5 +1,4 @@
 import http from './httpService';
-import { toast } from 'react-toastify';
 const apiEndpoint = '/api/users';
 
 export async function registerUser (user) {
