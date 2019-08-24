@@ -1,6 +1,7 @@
 const Question = require('./questionModel');
+
 exports.get = async function(req, res, next) {
-  const questions = await Question.find({});
+  const questions = await Question.find({}).sort({ 'created' : -1 });
   res.json({
     questions
   })
@@ -27,11 +28,25 @@ exports.getOne = function(req, res, next) {
   res.json(question);
 };
 
+exports.deleteOne = async function(req, res, next) {
+  var question = req.question;
+    question.remove(function(err, removed) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(removed);
+      }
+    });
+  // Question.deleteOne({ id: question._id }, function (err) {
+  //   console.log(err)
+  // });
+  // console.log(data);
+};
+
 exports.post = async function(req, res, next) {
-  console.log('triggered')
   const post  = req.body;
+  console.log(post);
   const newPost = await Question.create(post);
-  console.log(newPost)
   res.json(newPost);
   
 };

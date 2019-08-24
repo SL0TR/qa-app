@@ -5,6 +5,7 @@ export const GlobalContext = React.createContext();
 const GLobalState = ({ children, history }) => {
 
   const [currUser, setCurrUser] = useState(null);
+  const [questions, setQuestions] = useState([]);
   
 
   const onSubmit = async userData => {
@@ -21,7 +22,9 @@ const GLobalState = ({ children, history }) => {
     <GlobalContext.Provider value={{
       onSubmit,
       currUser,
-      setCurrUser
+      setCurrUser,
+      setQuestions,
+      questions
     }}>
       {children}
     </GlobalContext.Provider>

@@ -1,10 +1,70 @@
-import React, { useContext } from 'react'
-// import { GlobalContext } from '../../components/context/GlobalState';
+import React, { useContext, useEffect, useState } from 'react'
+import { GlobalContext } from '../../components/context/GlobalState';
+import { Row, Col, Accordion, Form, Button } from 'react-bootstrap';
+import { getAllQuestions, registerQuestion } from '../../services/questionService';
+import Question from '../../components/Question';
 
 const Questions = () => {
+  const { questions, setQuestions } = useContext(GlobalContext);
+  const [ question, setQuestion ] = useState('');
 
-  return ( 
-    <p className="body-2">Questions Portal</p>
+  useEffect(() => {
+
+    (async () => {
+      console.log('called')
+      const { data: questions } = await getAllQuestions();
+      if(questions) {
+        console.log(questions.questions);
+        setQuestions(questions.questions)
+      }
+    })();
+    
+  }, [setQuestions])
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    
+    const questionData = {
+      text: question
+    }
+    const { data} = await registerQuestion(questionData);
+    if(data ) {
+      setQuestion('');
+      const prevQuestions = questions;
+      const newQuestions = [
+        data,
+        ...prevQuestions
+      ]
+      setQuestions(newQuestions);
+    }
+  }
+
+  return (
+    <>
+      <Row>
+        <Col xs={12}>
+          <Form onSubmit={ e => { handleSubmit(e) }}>
+            <Row>
+              <Col lg={9} xs={12}>
+                <Form.Group controlId="formBasicEmail" >
+                  <Form.Control value={question} onChange={e => { setQuestion(e.target.value) } }  type="text" placeholder="Enter Your Question" />
+                </Form.Group>
+              </Col>
+              <Col lg={3} xs={12}>
+                <Button style={{ width: '100%'}}  variant="dark" type="submit">
+                  Submit
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+        </Col>
+        <Col xs={12} className="mt-5">
+          <Accordion defaultActiveKey="0">
+            { questions.map( (ques, i) => <Question key={i} index={i} question={ques} />)}
+          </Accordion>
+        </Col>
+      </Row>
+    </>
    );
 }
  
