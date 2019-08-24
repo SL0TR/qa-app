@@ -53,5 +53,4 @@ exports.post = async function(req, res, next) {
   console.log(question);
   const newQuestion = await Question.create(question);
   res.json(newQuestion);
-  
 };

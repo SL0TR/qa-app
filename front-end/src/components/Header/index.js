@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Navbar, Nav } from "react-bootstrap";
 import { GlobalContext } from '../context/GlobalState';
-import { signout, removeUserLocalStorage } from '../../services/authService';
+import { signout, removeUserLocalStorage, me } from '../../services/authService';
 import { toast } from 'react-toastify';
 const Header = () => {
 
-  const { currUser, setCurrUser } = useContext(GlobalContext);
+  const { currUser, setCurrUser, isAdmin, setIsAdmin } = useContext(GlobalContext);
 
   const handleSignout = async  () => {
     const { data } = await signout();
@@ -17,6 +17,21 @@ const Header = () => {
       window.location.href = '/login';
     }
   }
+
+  // Route Protection
+  useEffect(() => {
+    (async() => {
+      try { 
+        const { data } = await me();
+        setIsAdmin(data.isAdmin);
+      } catch(e) {
+        console.log('no login', e)
+      }
+    })();
+      
+  }, [setIsAdmin]);
+
+  console.log(isAdmin);
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -32,7 +47,13 @@ const Header = () => {
               <NavLink exact activeClassName="active" className="nav-link mr-3" to="/questions" >Questions</NavLink>
             </Nav.Item>
           )}
-          
+          {
+            isAdmin && (
+              <Nav.Item>
+                <NavLink exact activeClassName="active" className="nav-link mr-3" to="/users" >Users</NavLink>
+              </Nav.Item>
+            )
+          }
           { !currUser && (
             <Nav.Item>
               <NavLink exact activeClassName="active" className="nav-link mr-3" to="/login" >Login</NavLink>

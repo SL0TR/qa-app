@@ -28,9 +28,9 @@ const Questions = ({ history }) => {
         console.log('no login', e)
         history.push('/');
       }
-    })()
+    })();
       
-  }, [currUser, history, setIsAdmin]);
+  }, [history, setIsAdmin]);
 
   // Get All Questions and update state
   useEffect(() => {

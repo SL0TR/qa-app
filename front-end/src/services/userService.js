@@ -6,7 +6,5 @@ export async function registerUser (user) {
 }
 
 export async function getAllUsers (user) {
-  const { data } = await http.get(apiEndpoint, user);
-  console.log(data);
-  return data;
+  return http.get(apiEndpoint, user);
 }

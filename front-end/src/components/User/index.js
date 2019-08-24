@@ -4,7 +4,7 @@ import { GlobalContext } from '../context/GlobalState';
 
 const User = ({ children }) => {
 
-  const { setCurrUser } = useContext(GlobalContext);
+  const { setCurrUser, setIsAdmin } = useContext(GlobalContext);
 
  
   useEffect(() => {
@@ -15,11 +15,12 @@ const User = ({ children }) => {
         const { data: user } = await me();
         if (user) {
           setCurrUser(user);
+          setIsAdmin(user.isAdmin);
         }
       }
 
     })()
-  }, [setCurrUser])
+  }, [setCurrUser, setIsAdmin])
 
   return <>{children} </>
 }

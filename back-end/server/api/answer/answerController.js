@@ -76,3 +76,18 @@ exports.post = async function(req, res, next) {
   res.json(newAnswer);
   
 };
+
+
+exports.userAnswer = async function(req, res, next) {
+  console.log('trigg')
+  const { userId, questionId }  = req.body;
+  try {
+    const answer = await  Answer.findOne({ author: userId, question: questionId })
+    // console.log(answer)
+    res.json(answer);
+    
+  } catch(e) {
+    console.log(e.message)
+  }
+  
+};
