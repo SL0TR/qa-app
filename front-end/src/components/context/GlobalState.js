@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { login, setUserLocalStorage } from '../../services/authService';
-import { toast } from 'react-toastify';
 export const GlobalContext = React.createContext();
 
 const GLobalState = ({ children, history }) => {
