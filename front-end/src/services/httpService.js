@@ -18,8 +18,9 @@ http.interceptors.response.use(null, error => {
     toast.error(error.message);
   }
   const errMsg = error.response.data.msg || error.message;
-  console.log(errMsg);
-  toast.error(errMsg);
+  if(errMsg !== 'No User in session') {
+    toast.error(errMsg);
+  }
 
   return Promise.reject(error);
 })
