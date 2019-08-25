@@ -1,6 +1,8 @@
 import http from './httpService';
 
-const apiEndpoint = '/api/answers';
+import config from '../config.js';
+
+const apiEndpoint = config.backendUrl + '/api/answers';
 
 export function registerAnswer (answer) {
   return http.post(apiEndpoint, answer);

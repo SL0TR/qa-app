@@ -1,8 +1,9 @@
 import http from '../services/httpService';
+import config from '../config.js';
 
-const apiEndpoint = '/api/auth';
-const apiEndpointMe = '/api/me';
-const apiEndpointSignOut = '/api/signout';
+const apiEndpoint = config.backendUrl + '/api/auth';
+const apiEndpointMe = config.backendUrl +  '/api/me';
+const apiEndpointSignOut = config.backendUrl +'/api/signout';
 
 export async function login(user) {
   return http.post(apiEndpoint, user);

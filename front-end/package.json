@@ -39,7 +39,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://roar-task.herokuapp.com",
   "devDependencies": {
     "gh-pages": "^2.1.1"
   }

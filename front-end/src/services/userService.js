@@ -1,5 +1,7 @@
 import http from './httpService';
-const apiEndpoint = '/api/users';
+import config from '../config.js';
+
+const apiEndpoint = config.backendUrl +  '/api/users';
 
 export async function registerUser (user) {
   return http.post(apiEndpoint, user);
