@@ -13,9 +13,10 @@ const GLobalState = ({ children, history }) => {
     const { data: { user } } = await login(userData);
     if(user) {
       setUserLocalStorage(user);
-      setCurrUser(user);
-      window.location.reload();
-      window.location.href = window.location.hostname === 'localhost' ? '/' : '/qa-app/#/';
+      setCurrUser(user.isAdmin);
+      // window.location.reload();
+      window.location.assign(window.location.hostname === 'localhost' ? '/' : '/qa-app/#/');
+      // window.location.href = window.location.hostname === 'localhost' ? '/' : '/qa-app/#/';
     }
   };
 

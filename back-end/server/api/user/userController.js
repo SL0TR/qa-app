@@ -4,10 +4,11 @@ const jwt = require("jsonwebtoken");
 const config = require('../../config/config');
 
 exports.get = async function(req, res, next) {
-  const { userId } = req;
-  if (!userId) {
+
+  const { userId, isAdmin } = req;
+  if (!isAdmin) {
     return res.status(400).json({ msg: 'Not authorised!' });
-  } 
+  }  
   const users = await User.find({})
     .select('-password')
     .exec()
