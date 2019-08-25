@@ -82,7 +82,7 @@ exports.post = async function(req, res, next) {
 
 exports.userAnswer = async function(req, res, next) {
 
-  const { userId, isAdmin } = req;
+  const { isAdmin } = req;
   if (!isAdmin) {
     return res.status(400).json({ msg: 'Not authorised!' });
   } 

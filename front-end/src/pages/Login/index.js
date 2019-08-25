@@ -11,7 +11,7 @@ const Login = () => {
   useEffect(() => {
     if(currUser) {
       toast('Successfully Signed In!');
-      // window.location.href = '/';
+      window.location.href = window.location.hostname === 'localhost' ? '/' : '/qa-app/#/';
     }
   }, [currUser])
 

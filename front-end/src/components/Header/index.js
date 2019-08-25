@@ -15,7 +15,7 @@ const Header = () => {
       setCurrUser(null);
       removeUserLocalStorage();
       window.location.reload();
-      window.location.href = window.location.hostname === 'localhost' ? '/' : '/qa-app/#/login';
+      // window.location.href = window.location.hostname === 'localhost' ? '/' : '/qa-app/#/login';
     }
   }
 
