@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
-import { login, setUserLocalStorage } from '../../services/authService';
+import { login, setUserLocalStorage, getUserLocalStorage } from '../../services/authService';
 export const GlobalContext = React.createContext();
 
 const GLobalState = ({ children, history }) => {
 
-  const [currUser, setCurrUser] = useState(null);
+  const [currUser, setCurrUser] = useState(getUserLocalStorage());
   const [questions, setQuestions] = useState([]);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(window.localStorage.userIsAdmin);
   
 
   const onSubmit = async userData => {
     const { data: { user } } = await login(userData);
     if(user) {
       setUserLocalStorage(user);
-      setCurrUser(user.isAdmin);
-      window.location.reload();
-      // window.location.href = window.location.hostname === 'localhost' ? '/' : '/qa-app/#/';
+      setCurrUser(user);
+      setIsAdmin(user.isAdmin);
     }
   };
 

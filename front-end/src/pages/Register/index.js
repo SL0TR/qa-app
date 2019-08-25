@@ -11,10 +11,10 @@ const Register = ( { history }) => {
 
 
   useEffect(() => {
-    if(currUser) {
+    if(currUser._id) {
       history.push('/');
     }
-  }, [currUser, history])
+  }, [currUser._id, history])
 
   const onSubmit = async user => {
     const { data } = await registerUser(user);

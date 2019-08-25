@@ -17,10 +17,13 @@ http.interceptors.response.use(null, error => {
   if (!expectedError) {
     toast.error(error.message);
   }
-  const errMsg = error.response.data.msg || error.message;
-  if(errMsg !== 'No User in session') {
-    toast.error(errMsg);
+  if (error.response) {
+    const errMsg = error.response.data.msg || error.response;
+    if(errMsg !== 'No User in session') {
+      toast.error(errMsg);
+    }
   }
+  
 
   return Promise.reject(error);
 })

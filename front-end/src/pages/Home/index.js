@@ -13,7 +13,7 @@ const Home = () => {
             <h1 className="display-4 text-white mt-5 mb-2">ABC Limited</h1>
             <p className="lead mb-5 text-white-50">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non possimus ab labore provident mollitia. Id assumenda voluptate earum corporis facere quibusdam quisquam iste ipsa cumque unde nisi, totam quas ipsam.</p>
             {
-              currUser && (
+              currUser._id && (
                 <Button as={Link} to="/questions" variant="outline-light" className="outline text-black">Visit Out Questions page</Button>
               )
             }

@@ -11,6 +11,7 @@ import Questions from './pages/Questions';
 import GLobalState from './components/context/GlobalState';
 import User from './components/User';
 import Users from './pages/Users';
+import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
 
@@ -26,8 +27,8 @@ const App = () => {
               <Container className="py-5">
                 <Route exact path="/" component={Home} />
                 <Route exact path="/login" component={Login} />
-                <Route exact path="/users" component={Users} />
-                <Route exact path="/questions" component={Questions} />
+                <PrivateRoute path='/users' component={Users} />
+                <PrivateRoute path='/questions' component={Questions} />
                 <Route exact path="/register" component={Register} />
               </Container>
             </User>

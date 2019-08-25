@@ -4,11 +4,10 @@ import { Row, Col, Form, Button } from 'react-bootstrap';
 import { getAllQuestions, registerQuestion } from '../../services/questionService';
 import Question from '../../components/Question';
 import { registerAnswer } from '../../services/answerService';
-import { me } from '../../services/authService';
 import { toast } from 'react-toastify';
 
 const Questions = ({ history }) => {
-  const { questions, setQuestions, currUser, setIsAdmin, isAdmin } = useContext(GlobalContext);
+  const { questions, setQuestions, currUser, isAdmin } = useContext(GlobalContext);
   const [ question, setQuestion ] = useState('');
   const [state, setState] = useState({});
 
@@ -17,20 +16,6 @@ const Questions = ({ history }) => {
     const { name, value } = event.target;
     setState(prevState => ({ ...prevState, [name]: value }));
   }
-
-  // Route Protection
-  useEffect(() => {
-    (async() => {
-      try { 
-        const { data } = await me();
-        setIsAdmin(data.isAdmin);
-      } catch(e) {
-        console.log('no login', e)
-        history.push('/');
-      }
-    })();
-      
-  }, [history, setIsAdmin]);
 
   // Get All Questions and update state
   useEffect(() => {
