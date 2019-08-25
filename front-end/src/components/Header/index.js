@@ -14,6 +14,7 @@ const Header = () => {
       toast(data.msg)
       setCurrUser(null);
       removeUserLocalStorage();
+      window.location.reload();
       window.location.href = window.location.hostname === 'localhost' ? '/' : '/qa-app/#/login';
     }
   }
