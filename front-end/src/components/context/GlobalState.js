@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { login, setUserLocalStorage, getUserLocalStorage } from '../../services/authService';
 export const GlobalContext = React.createContext();
 
-const GLobalState = ({ children, history }) => {
+const GLobalState = ({ children }) => {
 
   const [currUser, setCurrUser] = useState(getUserLocalStorage());
   const [questions, setQuestions] = useState([]);

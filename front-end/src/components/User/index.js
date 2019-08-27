@@ -5,7 +5,6 @@ import { GlobalContext } from '../context/GlobalState';
 const User = ({ children }) => {
 
   const { setCurrUser, setIsAdmin } = useContext(GlobalContext);
-
  
   useEffect(() => {
     ( async () => {

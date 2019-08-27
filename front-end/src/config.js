@@ -1,5 +1,5 @@
 const config = {
-  backendUrl: 'http://localhost:3001'
+  backendUrl: 'https://roar-task.herokuapp.com'
 }
 
 export default config;

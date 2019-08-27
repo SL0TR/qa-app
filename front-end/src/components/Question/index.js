@@ -17,16 +17,16 @@ const Question = ({ question, index, admin, state, handleChange }) => {
 
   return (
     <Row className="justify-content-center align-items-center mb-3">
-      <Col lg={admin ? 10 : 12 } xs={12} >
+      <Col lg={(admin && admin !== 'false' && admin !== '') ? 10 : 12 } xs={12} >
         <Form.Label>{ index+1 + '. ' + question.text }</Form.Label>
         {
-          !admin && (
+          (admin === 'false' || !admin ) && (
             <Form.Control value={state[question._id]} name={question._id} onChange={handleChange}  type="text" placeholder="Enter answer" />
           )
         }
       </Col>
       {/* <Answer question={question} answers={question.answers} /> */}
-      { admin && (
+      { (admin !== 'false' && admin !== '' && admin)  && (
         <Col lg={2} xs={12} className="mb-2">
           <Button style={{ width: '100%' }} onClick={() => { handleDelete(question._id)}}  variant="danger" >Delete</Button>
         </Col>

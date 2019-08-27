@@ -92,7 +92,7 @@ const Questions = ({ history }) => {
     <>
       <Row>
         {
-          isAdmin && (
+          (isAdmin !== 'false' && isAdmin !== '' && isAdmin)  && (
             <Col xs={12}>
               <Form onSubmit={ e => { handleQuestionSubmit(e) }}>
                 <Row>
@@ -115,7 +115,7 @@ const Questions = ({ history }) => {
           <Form onSubmit={handleAnswerSubmit}>
           { questions.map( (ques, i) => <Question handleChange={handleChange} state={state} setState={setState} key={i} index={i} admin={isAdmin} question={ques} />)}
           {
-            !isAdmin && (
+            (isAdmin === 'false' || !isAdmin) && (
               <Button className="mt-2" type="submit" variant="dark">Submit</Button>
             )
           }

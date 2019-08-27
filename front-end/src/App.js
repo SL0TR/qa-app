@@ -27,7 +27,7 @@ const App = () => {
               <Container className="py-5">
                 <Route exact path="/" component={Home} />
                 <Route exact path="/login" component={Login} />
-                <PrivateRoute path='/users' component={Users} />
+                <PrivateRoute admin path='/users' component={Users} />
                 <PrivateRoute path='/questions' component={Questions} />
                 <Route exact path="/register" component={Register} />
               </Container>
