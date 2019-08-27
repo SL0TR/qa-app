@@ -37,7 +37,6 @@ exports.getOne = function(req, res, next) {
     return res.status(400).json({ msg: 'Not authorised!' });
   }
 
-
   var answer = req.answer;
   res.json(answer);
 };
@@ -50,32 +49,39 @@ exports.post = async function(req, res, next) {
   }
 
   const answer  = req.body;
-  const questionId  = answer.question;
+  if (answer._id !== '' && answer.text !== '') {
+    const updatedAnswer = await Answer.findOneAndUpdate({ _id: answer._id }, answer, {upsert:true} );
+      res.json({updatedAnswer})
 
-  let newAnswer = await Answer.create(answer);
-  newAnswer =  await newAnswer
-  .populate({ 
-    path: 'author',
-    select: '-password'
-  })
-  .execPopulate()
+  } else if ( answer.text !== '' ) {
+    const questionId  = answer.question;
+    delete answer._id;
 
-  try {
-    const question = await Question.findById( { _id: questionId } )
-    .exec();
-
-    question.answers.push(newAnswer);
+    let newAnswer = await Answer.create(answer);
+    newAnswer =  await newAnswer
+    .populate({ 
+      path: 'author',
+      select: '-password'
+    })
+    .execPopulate()
 
     try {
-      await question.save()
-    } catch(e) {
-      res.status(400).json({ msg: `Coulnd't create an answer, error!`})
-    }
+      const question = await Question.findById( { _id: questionId } )
+      .exec();
 
-  } catch(e) {
-    res.status(400).json({ msg: `Coulnd't create an answer, error!`});
+      question.answers.push(newAnswer);
+
+      try {
+        await question.save()
+      } catch(e) {
+        res.status(400).json({ msg: `Coulnd't create an answer, error!`})
+      }
+
+    } catch(e) {
+      res.status(400).json({ msg: `Coulnd't create an answer, error!`});
+    }
+    res.json(newAnswer);
   }
-  res.json(newAnswer);
   
 };
 

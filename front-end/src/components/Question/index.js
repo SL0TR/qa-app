@@ -20,8 +20,8 @@ const Question = ({ question, index, admin, state, handleChange }) => {
       <Col lg={(admin && admin !== 'false' && admin !== '') ? 10 : 12 } xs={12} >
         <Form.Label>{ index+1 + '. ' + question.text }</Form.Label>
         {
-          (admin === 'false' || !admin ) && (
-            <Form.Control value={state[question._id]} name={question._id} onChange={handleChange}  type="text" placeholder="Enter answer" />
+          (state[question._id] && (admin === 'false' || !admin) ) && (
+            <Form.Control value={state[question._id].text} name={question._id} onChange={handleChange}  type="text" placeholder="Enter answer" />
           )
         }
       </Col>

@@ -14,7 +14,7 @@ const Questions = ({ history }) => {
   // Update input elements on change
   function handleChange(event) {
     const { name, value } = event.target;
-    setState(prevState => ({ ...prevState, [name]: value }));
+    setState(prevState => ({ ...prevState, [name]:  { _id: state[name]['_id'], text: value } }));
   }
 
   // Get All Questions and update state
@@ -37,9 +37,19 @@ const Questions = ({ history }) => {
 
         // Update state based on questions.
         newQuestions.forEach(ques => {
-          ques.answers.forEach(el => {
-            setState(prevState => ({ ...prevState, [el.question]: el.text }));
-          })
+          let answerTxt;
+          let answerId;
+
+          if (ques.answers.length) {
+            answerTxt = ques.answers[0].text;
+            answerId = ques.answers[0]._id
+          } else {
+            answerTxt = '';
+            answerId = '';
+          }
+
+          setState(prevState => ({ ...prevState, [ques._id]: { text: answerTxt, _id: answerId  }}));
+
         })
         setQuestions(newQuestions);
       }
@@ -70,9 +80,10 @@ const Questions = ({ history }) => {
     
     for (var key in state) {
       const ans = {
-        text: state[key],
+        text: state[key].text,
         author: currUser._id,
-        question: key
+        question: key,
+        _id: state[key]._id
       }
       ansArray.push(ans)
     }

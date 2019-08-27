@@ -25,7 +25,6 @@ app.disable('etag');
 app.use((req, res, next) => {
   const { token } = req.cookies;
   if(token) {
-    console.log('reviceved cookies', token);
     const { userId, isAdmin } = jwt.verify(token, config.secrets.jwt);
     req.userId = userId;
     req.isAdmin = isAdmin;
